@@ -300,7 +300,7 @@ In addition to the `precommit-hook` package, this command will also
 
 The `lint` subcommand in `scripts` uses `eslint` instead of `jshint`, which means this starter kit doesn't use jshint at all, and this is true. 
 
-Since eslint supports ES6, the obvious choice is eslint.
+Since eslint supports ES6 while jshint only has partial support for ES6, the obvious choice is eslint.
 
 Delete two files `.jshintrc` and `.jshintignore`:
 
