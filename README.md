@@ -88,6 +88,7 @@ Install essential webpack loaders(What is loader? See [official docs here](https
 
 Add these loaders to `webpack.config.js`:
 
+```javascript
     module: {
       loaders: [
 		{ 
@@ -111,11 +112,13 @@ Add these loaders to `webpack.config.js`:
         }
       ]
     }
+```
 
 Babel requires some helper code to be run before your application. To achieve this, add the `babel-polyfill` to the `entry` section. 
 
 Finally we have a complete `webpack.config.js`:
 
+```javascript
     var webpack = require('webpack');
     var path = require('path');
     
@@ -153,6 +156,7 @@ Finally we have a complete `webpack.config.js`:
         ]
       }
     };
+```
 
 ## 1.4 Write our code
 
