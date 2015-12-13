@@ -274,8 +274,8 @@ Add `.eslintrc`:
   "env": {
     "node": true
   },
-  ecmaFeatures: {
-    jsx: true
+  "ecmaFeatures": {
+    "jsx": true
   },
   "globals": {
     "React": true
