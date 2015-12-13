@@ -2,9 +2,7 @@ This repo is a tutorial about how to build a react starter kit step by step.
 
 All starter kits in this tutorial use ES6 by default.
 
-# 1 kit1: React+Babel+Webpack
-
-This starter kit is almost the same with [ruanyf/react-babel-webpack-boilerplate](https://github.com/ruanyf/react-babel-webpack-boilerplate), with a few enchancements and detailed steps.
+# 1 Kit1: React+Babel+Webpack
 
 First, make an empty project by running `npm init`, and enter the following information:
 
@@ -181,7 +179,7 @@ In `main.jsx` file add a require to `index.html` via `file-loader`,
     require('file?name=[name].[ext]!./index.html');
 
 
-# 2 kit2: kit1 + webpack-dev-server + ESLint
+# 2 Kit2: Kit1 + webpack-dev-server + ESLint
 
 We're going to use more features of webpack, to make the development workflow more powerful.
 
@@ -306,9 +304,80 @@ Delete two files `.jshintrc` and `.jshintignore`:
 
     rm .jshint*
 
+Actually this starter kit is almost the same as [ruanyf/react-babel-webpack-boilerplate](https://github.com/ruanyf/react-babel-webpack-boilerplate).
+
 Reference:
 
 + [5-step quick start guide to ESLint](http://codeutopia.net/docs/eslint/)
 + [A Comparison of JavaScript Linting Tools](http://www.sitepoint.com/comparison-javascript-linting-tools/)
++ [ruanyf/react-babel-webpack-boilerplate](https://github.com/ruanyf/react-babel-webpack-boilerplate)
++ [ruanyf/webpack-demos](https://github.com/ruanyf/webpack-demos)
++ [petehunt/webpack-howto](https://github.com/petehunt/webpack-howto)
+
+# 3 Kit3: Kit2 + Redux
+
+Install Redux related packages,
+
+    npm install --save redux react-redux redux-thunk
+
+Let's write a simple component named `Counter`, which is almost the same with the official example, [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter).
+
+Copy four directories `actions`, `components`, `containers`, `reducers` from the official counter example to our `src` directory.
+
+Rename `component/Counter.js` to `component/Counter.jsx`, `containers/App.js` to `containers/Counter.js`
+
+In `containers/Counter.js` change the line `import Counter from '../components/Counter'` to `import Counter from '../components/Counter.jsx'`.
+
+In `components/App.jsx`, add the `Counter` component:
+
+    import Counter from '../containers/Counter'
+    //...
+    
+    render() {
+      return (
+        <div>
+          <h1>Hello World</h1>
+          <Counter />
+        </div>
+      )
+    }
+
+In `main.jsx` we create a `store` and make the `Provider` as the root component:
+
+    import React from 'react'
+    import ReactDOM from 'react-dom'
+    import App from './components/App.jsx'
+    import { Provider } from 'react-redux'
+    import { createStore, applyMiddleware } from 'redux'
+    import thunk from 'redux-thunk'
+    import reducer from './reducers'
+    require('file?name=[name].[ext]!./index.html')
+    
+    const createStoreWithMiddleware = applyMiddleware(
+      thunk
+    )(createStore)
+    
+    const store = createStoreWithMiddleware(reducer)
+    
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      document.getElementById('app')
+    )
+
+Compile and run:
+
+    npm install
+    npm run build
+    npm run start
+
+It will open in a browser automatically.
+
+References:
+
++ [Full-Stack Redux Tutorial - Tero Parviainen](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html)
++ [happypoulp/redux-tutorial](https://github.com/happypoulp/redux-tutorial)
++ [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter)
 
 
