@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-require('./App.css');
+require('./App.css')
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
     return (
       <h1>Hello World</h1>
-    );
+    )
   }
 }
