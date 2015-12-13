@@ -2,6 +2,14 @@ This repo is a tutorial about how to build a react starter kit step by step.
 
 All starter kits in this tutorial use ES6 by default.
 
+Table of Contents
+-----------------
+1. [Kit1](#1-kit1-reactbabelwebpack)
+1. [Kit2](#2-kit2-kit1--webpack-dev-server--eslint)
+1. [Kit3](#3-kit3-kit2--redux)
+1. [Kit4](#4-kit4-kit3--react-router)
+
+
 # 1 Kit1: React+Babel+Webpack
 
 First, make an empty project by running `npm init`, and enter the following information:
@@ -379,5 +387,122 @@ References:
 + [Full-Stack Redux Tutorial - Tero Parviainen](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html)
 + [happypoulp/redux-tutorial](https://github.com/happypoulp/redux-tutorial)
 + [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter)
+
+
+# 4 Kit4: Kit3 + react-router
+
+## 4.1 Use react-router
+
+Now the text `Hello World` and `Counter` component huddle together in one page, which looks ugly, how about split them into separate pages?
+
+We want the `Hello World` text to be displayed at the home URL '/' and the counter at '/counter'. Here react-router comes to help.
+
+Install react-router,
+
+    npm install history@1.13.1 react-router@latest
+
+Do use `history@1.13.1`, see official docs [Release v1.0.2](https://github.com/rackt/react-router/releases/tag/v1.0.2):
+
+> Please ensure your project is running history v1.13.1 to avoid any deprecation warnings or unmet peerDependencies errors.
+
+
+Creat a `Header` component, which is a stateless component:
+
+    import React from 'react'
+    import {Link} from 'react-router'
+    
+    export default () =>
+      <div>
+        <Link to="/">Home</Link>
+        {' '}
+        <Link to="counter">Counter</Link>
+      </div>
+
+Split `components/App.jsx` to two files, `App.jsx` and `HelloWorld.jsx`.
+
+`App.jsx`:
+
+    import React from 'react'
+    import Header from './Header.jsx'
+    
+    export default (props) =>
+      <div>
+        <Header/>
+        {props.children}
+      </div>
+
+`HelloWorld.jsx`:
+
+    import React from 'react'
+    require('./HelloWorld.css')
+    
+    export default () =>
+      <h1>Hello World</h1>
+
+Rename the file `App.css` to `HelloWorld.css`.
+
+Create a new file `src/routes.jsx`:
+
+    import React from 'react'
+    import { Route, IndexRoute } from 'react-router'
+    import App from './components/App.jsx'
+    import HelloWorld from './components/HelloWorld.jsx'
+    import Counter from './containers/Counter'
+    
+    const routes =
+      <Route path="/" component={App}>
+        <IndexRoute component={HelloWorld} />
+        <Route path="counter" component={Counter} />
+      </Route>
+    
+    export default routes
+
+Make `Router` as the root component in `main.jsx`:
+
+    import routes from './routes.jsx'
+    import Router from 'react-router'
+    //...
+    ReactDOM.render(
+      <Provider store={store}>
+        <Router>{routes}</Router>
+      </Provider>,
+      document.getElementById('app')
+    )
+
+Compile and Run,
+
+    npm install
+    npm start
+
+Everything works!
+
+## 4.2 Remove `#` in URLs
+
+You'll see a `#` in all URLs, this is because react-router uses `createHashHistory` by default.
+
+Normally we want URLs <http://www.example.com/about> instead of <http://www.example.com/#/about>, how to achive this? Use `createBrowserHistory`.
+
+Modify `main.jsx` a little bit:
+
+    import createBrowserHistory from 'history/lib/createBrowserHistory'
+    //...
+    
+    <Router history={createBrowserHistory()}>{routes}</Router>
+
+Run `npm start` and take a look in browser. Looks Good!
+
+But wait. When you refresh the page <http://localhost:8080/counter> it will return error. It seems you can only visit the counter page by clicking the link, why?
+
+Why? Because for now react-router only works in browser, when you click fresh or hit enter on the browser address bar the request will be sent to server. In our web app we only have a simple express server bundled in `webpack-dev-server`, which doesn't understand the URL <http://localhost:8080/counter> at all. How to make our server understand URLs? There are several options:
+
++ run react-router at server-side
++ always return `index.html` and leave all work to client-side react-router
+
+To keep our web app simple, we'll use the second way:
+
++ In development phase, make `webpack-dev-server` always return `index.html`
++ In deploy phase, make our HTTP server such as Nignx always return `index.html`
+
+Add a line `historyApiFallback: true,` to the `devServer` field of `webpack.config.js`, then run `npm start` again and refresh at <http://localhost:8080/counter> or enter it directly in browser address bar, you'll see everything works!
 
 
