@@ -29,24 +29,26 @@ First, make an empty project by running `npm init`, and enter the following info
 
 It will generate a file `package.json`:
 
-    {
-      "name": "kit1",
-      "version": "1.0.0",
-      "description": "A React starter kit",
-      "main": "src/main.jsx",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "keywords": [
-        "es6",
-        "react",
-        "babel6",
-        "webpack",
-        "boilerplate"
-      ],
-      "author": "soulmachine",
-      "license": "MIT"
-    }
+```json
+{
+  "name": "react-starter-kit",
+  "version": "1.0.0",
+  "description": "A React starter kit",
+  "main": "src/main.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "es6",
+    "react",
+    "babel6",
+    "webpack",
+    "boilerplate"
+  ],
+  "author": "soulmachine",
+  "license": "MIT"
+}
+```
 
 ## 1.1 Install React
 
@@ -89,29 +91,29 @@ Install essential webpack loaders(What is loader? See [official docs here](https
 Add these loaders to `webpack.config.js`:
 
 ```javascript
-    module: {
-      loaders: [
-		{ 
-		  test: /\.css$/, 
-		  include: path.resolve(__dirname, 'src'),
-		  loader: 'style-loader!css-loader?modules' 
-		},
-        {
-          test: /\.jsx?$/,
-		  include: path.resolve(__dirname, 'src'),
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-          query: {
-            plugins: ['transform-runtime'],
-            presets: ['es2015', 'react', 'stage-0']
-          }
-        },
-		{ 
-	      test: /\.(png|jpg)$/,
-          loader: 'url-loader?limit=8192'
-        }
-      ]
+module: {
+  loaders: [
+	{ 
+	  test: /\.css$/, 
+	  include: path.resolve(__dirname, 'src'),
+	  loader: 'style-loader!css-loader?modules' 
+	},
+    {
+      test: /\.jsx?$/,
+	  include: path.resolve(__dirname, 'src'),
+      exclude: /node_modules/,
+      loader: 'babel-loader',
+      query: {
+        plugins: ['transform-runtime'],
+        presets: ['es2015', 'react', 'stage-0']
+      }
+    },
+	{ 
+	  test: /\.(png|jpg)$/,
+      loader: 'url-loader?limit=8192'
     }
+  ]
+}
 ```
 
 Babel requires some helper code to be run before your application. To achieve this, add the `babel-polyfill` to the `entry` section. 
@@ -119,43 +121,43 @@ Babel requires some helper code to be run before your application. To achieve th
 Finally we have a complete `webpack.config.js`:
 
 ```javascript
-    var webpack = require('webpack');
-    var path = require('path');
-    
-    module.exports = {
-      entry: [
-        'babel-polyfill',
-        path.resolve(__dirname, 'src/main.jsx')
-      ],
-      output: {
-        path: __dirname + '/build',
-        publicPath: '/',
-        filename: 'bundle.js'
+var webpack = require('webpack');
+var path = require('path');
+
+module.exports = {
+  entry: [
+    'babel-polyfill',
+    path.resolve(__dirname, 'src/main.jsx')
+  ],
+  output: {
+    path: __dirname + '/build',
+    publicPath: '/',
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.css$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: 'style-loader!css-loader?modules'
       },
-      module: {
-        loaders: [
-          {
-            test: /\.css$/,
-            include: path.resolve(__dirname, 'src'),
-            loader: 'style-loader!css-loader?modules'
-          },
-          {
-            test: /\.jsx?$/,
-            include: path.resolve(__dirname, 'src'),
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            query: {
-              plugins: ['transform-runtime'],
-              presets: ['es2015', 'react', 'stage-0']
-            }
-          },
-          {
-            test: /\.(png|jpg)$/,
-            loader: 'url-loader?limit=8192'
-          }
-        ]
+      {
+        test: /\.jsx?$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          plugins: ['transform-runtime'],
+          presets: ['es2015', 'react', 'stage-0']
+        }
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=8192'
       }
-    };
+    ]
+  }
+};
 ```
 
 ## 1.4 Write our code
@@ -211,12 +213,14 @@ Add a line to the `entry` section of `webpack.config.js`:
 
 And configure `webpack-dev-server` by adding a `devServer` field in `webpack.config.js`:
 
-    devServer: {
-      inline: true,
-      progress: true,
-      contentBase: './build',
-      port: 8080
-    },
+```javascript
+devServer: {
+  inline: true,
+  progress: true,
+  contentBase: './build',
+  port: 8080
+},
+```
 
 Now run `npm run start` and open <http://localhost:8080> in a browser.
 
@@ -228,11 +232,13 @@ Now run `npm run start` and open <http://localhost:8080> in a browser.
 
 Add require to this plugin and add a new instance to the `plugins` field of `webpack.config.js`:
 
-    var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-    // ...
-    plugins: [
-      new OpenBrowserPlugin({ url: 'http://localhost:8080' })
-    ]
+```javascript
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+// ...
+plugins: [
+  new OpenBrowserPlugin({ url: 'http://localhost:8080' })
+]
+```
 
 Now build the project again and run `npm run start` you'll find that the the browser opens <http://localhost:8080> automatically.
 
@@ -263,27 +269,29 @@ Install:
 
 Add `.eslintrc`:
 
-    {
-      "env": {
-        "node": true
-      },
-      ecmaFeatures: {
-        jsx: true
-      },
-      "globals": {
-        "React": true
-      },
-      "plugins": [
-        "react"
-      ],
-      "extends": "airbnb",
-      "rules": {
-        "comma-dangle": 0,
-        "no-console": 0,
-        "id-length": 0,
-        "react/prop-types": 0
-      }
-    }
+```json
+{
+  "env": {
+    "node": true
+  },
+  ecmaFeatures: {
+    jsx: true
+  },
+  "globals": {
+    "React": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": 0,
+    "no-console": 0,
+    "id-length": 0,
+    "react/prop-types": 0
+  }
+}
+```
 
 Add `.eslintignore`:
 
@@ -342,41 +350,45 @@ In `containers/Counter.js` change the line `import Counter from '../components/C
 
 In `components/App.jsx`, add the `Counter` component:
 
-    import Counter from '../containers/Counter'
-    //...
-    
-    render() {
-      return (
-        <div>
-          <h1>Hello World</h1>
-          <Counter />
-        </div>
-      )
-    }
+```javascript
+import Counter from '../containers/Counter'
+//...
+
+render() {
+  return (
+    <div>
+      <h1>Hello World</h1>
+      <Counter />
+    </div>
+  )
+}
+```
 
 In `main.jsx` we create a `store` and make the `Provider` as the root component:
 
-    import React from 'react'
-    import ReactDOM from 'react-dom'
-    import App from './components/App.jsx'
-    import { Provider } from 'react-redux'
-    import { createStore, applyMiddleware } from 'redux'
-    import thunk from 'redux-thunk'
-    import reducer from './reducers'
-    require('file?name=[name].[ext]!./index.html')
-    
-    const createStoreWithMiddleware = applyMiddleware(
-      thunk
-    )(createStore)
-    
-    const store = createStoreWithMiddleware(reducer)
-    
-    ReactDOM.render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      document.getElementById('app')
-    )
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/App.jsx'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import reducer from './reducers'
+require('file?name=[name].[ext]!./index.html')
+
+const createStoreWithMiddleware = applyMiddleware(
+  thunk
+)(createStore)
+
+const store = createStoreWithMiddleware(reducer)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('app')
+)
+```
 
 Compile and run:
 
@@ -412,66 +424,76 @@ Do use `history@1.13.1`, see official docs [Release v1.0.2](https://github.com/r
 
 Creat a `Header` component, which is a stateless component:
 
-    import React from 'react'
-    import {Link} from 'react-router'
-    
-    export default () =>
-      <div>
-        <Link to="/">Home</Link>
-        {' '}
-        <Link to="counter">Counter</Link>
-      </div>
+```javascript
+import React from 'react'
+import {Link} from 'react-router'
+
+export default () =>
+  <div>
+    <Link to="/">Home</Link>
+    {' '}
+    <Link to="counter">Counter</Link>
+  </div>
+```
 
 Split `components/App.jsx` to two files, `App.jsx` and `HelloWorld.jsx`.
 
 `App.jsx`:
 
-    import React from 'react'
-    import Header from './Header.jsx'
-    
-    export default (props) =>
-      <div>
-        <Header/>
-        {props.children}
-      </div>
+```javascript
+import React from 'react'
+import Header from './Header.jsx'
+
+export default (props) =>
+  <div>
+    <Header/>
+    {props.children}
+  </div>
+```
 
 `HelloWorld.jsx`:
 
-    import React from 'react'
-    require('./HelloWorld.css')
-    
-    export default () =>
-      <h1>Hello World</h1>
+```javascript
+import React from 'react'
+require('./HelloWorld.css')
+
+export default () =>
+  <h1>Hello World</h1>
+```
 
 Rename the file `App.css` to `HelloWorld.css`.
 
 Create a new file `src/routes.jsx`:
 
-    import React from 'react'
-    import { Route, IndexRoute } from 'react-router'
-    import App from './components/App.jsx'
-    import HelloWorld from './components/HelloWorld.jsx'
-    import Counter from './containers/Counter'
-    
-    const routes =
-      <Route path="/" component={App}>
-        <IndexRoute component={HelloWorld} />
-        <Route path="counter" component={Counter} />
-      </Route>
-    
-    export default routes
+```javascript
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
+import App from './components/App.jsx'
+import HelloWorld from './components/HelloWorld.jsx'
+import Counter from './containers/Counter'
+
+const routes =
+  <Route path="/" component={App}>
+    <IndexRoute component={HelloWorld} />
+    <Route path="counter" component={Counter} />
+  </Route>
+
+export default routes
+```
 
 Make `Router` as the root component in `main.jsx`:
 
-    import routes from './routes.jsx'
-    import Router from 'react-router'
-    //...
-    ReactDOM.render(
-      <Provider store={store}>
-        <Router>{routes}</Router>
-      </Provider>,
-      document.getElementById('app')
-    )
+```javascript
+import routes from './routes.jsx'
+import Router from 'react-router'
+//...
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>{routes}</Router>
+  </Provider>,
+  document.getElementById('app')
+)
+```
 
 Compile and Run,
 
@@ -488,10 +510,12 @@ Normally we want URLs <http://www.example.com/about> instead of <http://www.exam
 
 Modify `main.jsx` a little bit:
 
-    import createBrowserHistory from 'history/lib/createBrowserHistory'
-    //...
-    
-    <Router history={createBrowserHistory()}>{routes}</Router>
+```javascript
+import createBrowserHistory from 'history/lib/createBrowserHistory'
+//...
+
+<Router history={createBrowserHistory()}>{routes}</Router>
+```
 
 Run `npm start` and take a look in browser. Looks Good!
 
