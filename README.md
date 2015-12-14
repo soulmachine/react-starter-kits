@@ -577,7 +577,7 @@ To enable ES6 syntax in test code, we need to:
 
     To achive this, add a flag `--compilers js:babel-core/register`
 
-2. Activating the `babel-preset-es2015` package that we already installed.
+1. Activating the `babel-preset-es2015` package that we already installed.
 
     We just need to add a "babel" section to `package.json`:
     
@@ -592,7 +592,9 @@ To enable ES6 syntax in test code, we need to:
       "presets": ["es2015", "react", "stage-0"]
     },
     ```
+1. Add `import 'babel-polyfill'` to `test/test_helper.js`
 
+    Babel won't transpile global objects such as `Iterator`, `Generator`, `Promise`, `Map`, `Set`, so we need to polyfill them in all test code. And the most convenient way is to add it to `test/test_helper.js`.
 
 After figuring out all flags needed by `mocha` command, we can modify the `test` subcommand in the `scripts` field of `package.json`:
 
