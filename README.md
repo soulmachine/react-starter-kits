@@ -399,11 +399,16 @@ Compile and run:
 
 It will open in a browser automatically.
 
+At last, I need to point out the **Project Layout** specifically. In a `React + Redux` project, the state is in Redux single store, so there is no need for components to have their own state, which means **all components are stateless**. The `src/containers` is for stateless components which are not aware of Redux, and the `src/containers` is for [smart components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.9esqxa1km) which are responsible to pass down state to dumb components as props.
+
 References:
 
 + [Full-Stack Redux Tutorial - Tero Parviainen](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html)
 + [happypoulp/redux-tutorial](https://github.com/happypoulp/redux-tutorial)
 + [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter)
++ [Container Components](https://medium.com/@learnreact/container-components-c0e67432e005#.sd66r3cj6)
++ [Smart and Dumb Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.9esqxa1km)
++ [container vs component?](https://github.com/rackt/redux/issues/756)
 
 
 # 4 Kit4: Kit3 + react-router
