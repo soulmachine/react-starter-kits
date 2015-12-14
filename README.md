@@ -636,3 +636,35 @@ References:
 + [Testing in ES6 with Mocha and Babel 6](http://jamesknelson.com/testing-in-es6-with-mocha-and-babel-6/)
 
 
+# 6 Kit6: Kit5 + material-ui
+
+    npm install --save material-ui react-tap-event-plugin
+
+Let's replace the `+` button in the `Counter` component to [RaisedButton](http://www.material-ui.com/#/components/buttons). 
+
+In ``src/components/Counter.jsx` import the `RaisedButton` and replace the `+` button with it:
+
+```jsx
+const RaisedButton = require('material-ui/lib/raised-button')
+//...
+<RaisedButton label="+" secondary={true} onTouchTap={increment}/>
+```
+
+For now we can't use ES6 `import` to import material-ui components, see this PR [[ES6] Use import over require by oliviertassinari · Pull Request #2333](https://github.com/callemall/material-ui/pull/2333). 
+
+Change the `<p>` to `<div>` or there will be warnings in console.
+
+Add the following lines to `src/main.jsx`:
+
+```javascript
+const injectTapEventPlugin = require('react-tap-event-plugin')
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin()
+```
+
+Now run `npm start` and you'll see the new button in browser.
+
+
