@@ -415,7 +415,7 @@ We want the `Hello World` text to be displayed at the home URL '/' and the count
 
 Install react-router,
 
-    npm install history@1.13.1 react-router@latest
+    npm install --save history@1.13.1 react-router@latest
 
 Do use `history@1.13.1`, see official docs [Release v1.0.2](https://github.com/rackt/react-router/releases/tag/v1.0.2):
 
