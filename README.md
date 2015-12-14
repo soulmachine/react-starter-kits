@@ -534,3 +534,95 @@ To keep our web app simple, we'll use the second way:
 Add a line `historyApiFallback: true,` to the `devServer` field of `webpack.config.js`, then run `npm start` again and refresh at <http://localhost:8080/counter> or enter it directly in browser address bar, you'll see everything works!
 
 
+# 5 Kit5: Kit4 + Mocha
+
+[Mocha](https://mochajs.org/) is a JavaScript unit test framework, [Chai](http://chaijs.com/) is an assertion/expectation library.
+
+    npm install --save-dev mocha chai
+
+We're going to test our React components as well, and that's going to require a DOM. One alternative would be to run tests in an actual web browser with a library like [Karma](http://karma-runner.github.io/0.13/index.html). However, we don't actually need to do that because we can [get away with](http://jaketrent.com/post/testing-react-with-jsdom/) using [jsdom](https://github.com/tmpvar/jsdom), a pure JavaScript DOM implementation that runs in Node:
+
+    npm install --save-dev jsdom
+
+We also need a little setup code for jsdom before it's ready for React to use. 
+
++ We essentially need to create the `document` and `window` objects that would normally be provided by the web browser. Then we need to put them on the [global object](https://nodejs.org/api/globals.html#globals_global), so that they will be discovered by React when it accesses `document` or `window`. 
++ Additionally, we need to take all the properties that the `window` object contains, such as `navigator`, and hoist them on to the Node.js global object, so that properties provided by `window` can be used without the `window.` prefix, which is what would happen in a browser environment. Some of the code inside React relies on this
+
+We can put this kind of setup code in a file `test/test_helper.js`:
+
+```javascript
+import jsdom from 'jsdom'
+import chai from 'chai'
+
+const doc = jsdom.jsdom('<!doctype html><html><body></body></html>')
+const win = doc.defaultView
+
+global.document = doc
+global.window = win
+
+// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
+Object.keys(window).forEach((key) => {
+  if (!(key in global)) {
+    global[key] = window[key];
+  }
+})
+```
+
+We need to run this file before any unit tests. To achive this, we need to add a flag `--require ./test/test_helper.js` to the `mocha` command.
+
+To enable ES6 syntax in test code, we need to:
+1. Use Babel to transpile ES6 code before running them
+
+    To achive this, add a flag `--compilers js:babel-core/register`
+
+2. Activating the `babel-preset-es2015` package that we already installed.
+
+    We just need to add a "babel" section to `package.json`:
+    
+    ```json
+    "babel": {"presets": ["es2015"]}
+    ```
+    
+    We can also activate other two presets that we already installed:
+    
+    ```json
+    "babel": {
+      "presets": ["es2015", "react", "stage-0"]
+    },
+    ```
+
+
+After figuring out all flags needed by `mocha` command, we can modify the `test` subcommand in the `scripts` field of `package.json`:
+
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'"
+
+At last let's write a simple unit test case. First create a file `test/add.js`:
+
+```javascript
+export default function add(x, y) {
+  return x + y
+}
+```
+
+Second, write a unite test file `test/add.test.js`:
+
+```javascript
+import add from './add'
+import { expect } from 'chai'
+
+describe('add function', function() {
+  it('1 plus 1 equal to 2', function() {
+    expect(add(1, 1)).to.be.equal(2);
+  })
+})
+```
+
+Type "`npm test`" to run all unit tests.
+
+References:
+
++ [测试框架 Mocha 实例教程 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html)
++ [Unit Testing support](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html#unit-testing-support)
+
+
