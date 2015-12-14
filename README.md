@@ -573,6 +573,7 @@ Object.keys(window).forEach((key) => {
 We need to run this file before any unit tests. To achive this, we need to add a flag `--require ./test/test_helper.js` to the `mocha` command.
 
 To enable ES6 syntax in test code, we need to:
+
 1. Use Babel to transpile ES6 code before running them
 
     To achive this, add a flag `--compilers js:babel-core/register`
@@ -627,5 +628,6 @@ References:
 
 + [测试框架 Mocha 实例教程 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html)
 + [Unit Testing support](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html#unit-testing-support)
++ [Testing in ES6 with Mocha and Babel 6](http://jamesknelson.com/testing-in-es6-with-mocha-and-babel-6/)
 
 
