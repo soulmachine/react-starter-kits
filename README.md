@@ -9,6 +9,7 @@ Table of Contents
 1. [Kit3](#3-kit3-kit2--redux)
 1. [Kit4](#4-kit4-kit3--react-router)
 1. [Kit5](#5-kit5-kit4--mocha)
+1. [Kit6](#6-kit6-kit5--material-ui)
 
 
 # 1 Kit1: React+Babel+Webpack
