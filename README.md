@@ -8,6 +8,7 @@ Table of Contents
 1. [Kit2](#2-kit2-kit1--webpack-dev-server--eslint)
 1. [Kit3](#3-kit3-kit2--redux)
 1. [Kit4](#4-kit4-kit3--react-router)
+1. [Kit5](#5-kit5-kit4--mocha)
 
 
 # 1 Kit1: React+Babel+Webpack
