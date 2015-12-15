@@ -410,6 +410,7 @@ References:
 + [Container Components](https://medium.com/@learnreact/container-components-c0e67432e005#.sd66r3cj6)
 + [Smart and Dumb Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.9esqxa1km)
 + [container vs component?](https://github.com/rackt/redux/issues/756)
++ [React 0.14：揭秘局部组件状态陷阱](http://zhuanlan.zhihu.com/FrontendMagazine/20416954)
 
 
 # 4 Kit4: Kit3 + react-router
