@@ -62,6 +62,10 @@ Babel 6 changes drastically compared with Babel 5. Every transform is now a plug
 
 	npm install --save-dev babel-core babel-preset-es2015 babel-preset-react babel-preset-stage-0
 
+And three presets to `.babelrc`:
+
+    "presets": ["es2015", "react", "stage-0"]
+
 **Runtime support**
 
 Babel can’t support all of ES6 with compilation alone — it also requires some runtime support. In particular, the new ES6 built-ins like Set, Map and Promise must be polyfilled, and Babel’s generator implementation also uses a number of runtime helpers.
@@ -72,6 +76,10 @@ Babel also bakes a number of smaller helpers directly into your compiled code(us
 
     npm install --save babel-runtime
     npm install --save-dev babel-plugin-transform-runtime
+
+Add the plugin to `.babelrc`:
+
+    "plugins": ["transform-runtime"]
 
 Reference: 
 
@@ -104,11 +112,7 @@ module: {
       test: /\.jsx?$/,
 	  include: path.resolve(__dirname, 'src'),
       exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        plugins: ['transform-runtime'],
-        presets: ['es2015', 'react', 'stage-0']
-      }
+      loader: 'babel'
     },
 	{ 
 	  test: /\.(png|jpg)$/,
@@ -160,11 +164,7 @@ module.exports = {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          plugins: ['transform-runtime'],
-          presets: ['es2015', 'react', 'stage-0']
-        }
+        loader: 'babel'
       },
       {
         test: /\.(png|jpg)$/,
@@ -598,21 +598,6 @@ To enable ES6 syntax in test code, we need to:
 
     To achive this, add a flag `--compilers js:babel-core/register`
 
-1. Activating the `babel-preset-es2015` package that we already installed.
-
-    We just need to add a "babel" section to `package.json`:
-    
-    ```json
-    "babel": {"presets": ["es2015"]}
-    ```
-    
-    We can also activate other two presets that we already installed:
-    
-    ```json
-    "babel": {
-      "presets": ["es2015", "react", "stage-0"]
-    },
-    ```
 1. Add `import 'babel-polyfill'` to `test/test_helper.js`
 
     Babel won't transpile global objects such as `Iterator`, `Generator`, `Promise`, `Map`, `Set`, so we need to polyfill them in all test code. And the most convenient way is to add it to `test/test_helper.js`.
