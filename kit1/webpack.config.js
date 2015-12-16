@@ -8,6 +8,10 @@ module.exports = {
     'babel-polyfill',
     path.resolve(__dirname, 'src/main.jsx')
   ],
+  resolve: {
+    //When requiring, you don't need to add these extensions
+    extensions: ["", ".js", ".jsx"]
+  },
   output: {
     path: __dirname + '/build',
     publicPath: '/',

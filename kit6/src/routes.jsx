@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import App from './components/App.jsx'
-import HelloWorld from './components/HelloWorld.jsx'
+import App from './components/App'
+import HelloWorld from './components/HelloWorld'
 import Counter from './containers/Counter'
 
 const routes = (

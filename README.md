@@ -120,6 +120,15 @@ module: {
 
 Babel requires some helper code to be run before your application. To achieve this, add the `babel-polyfill` to the `entry` section. 
 
+If you write a component in a `.jsx` file instead of `.js`, you must import or require it with the `.jsx` extension. How to import components without `.jsx` suffix? Add a `resolve` field to `webpack.config.js`:
+
+```javascript
+resolve: {
+  //When requiring, you don't need to add these extensions
+  extensions: ["", ".js", ".jsx"]
+},
+```
+
 Finally we have a complete `webpack.config.js`:
 
 ```javascript
@@ -131,6 +140,10 @@ module.exports = {
     'babel-polyfill',
     path.resolve(__dirname, 'src/main.jsx')
   ],
+  resolve: {
+    //When requiring, you don't need to add these extensions
+    extensions: ["", ".js", ".jsx"]
+  },
   output: {
     path: __dirname + '/build',
     publicPath: '/',
