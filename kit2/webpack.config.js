@@ -38,7 +38,7 @@ module.exports = {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: 'babel',
         query: {
           plugins: ['transform-runtime'],
           presets: ['es2015', 'react', 'stage-0']
