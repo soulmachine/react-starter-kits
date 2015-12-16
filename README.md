@@ -4,12 +4,12 @@ All starter kits in this tutorial use ES6 by default.
 
 Table of Contents
 -----------------
-1. [Kit1](#1-kit1-reactbabelwebpack)
-1. [Kit2](#2-kit2-kit1--webpack-dev-server--eslint)
-1. [Kit3](#3-kit3-kit2--redux)
-1. [Kit4](#4-kit4-kit3--react-router)
-1. [Kit5](#5-kit5-kit4--mocha)
-1. [Kit6](#6-kit6-kit5--material-ui)
+1. [Kit1: React+Babel+Webpack](#1-kit1-reactbabelwebpack)
+1. [Kit2: Kit1 + webpack-dev-server + ESLint](#2-kit2-kit1--webpack-dev-server--eslint)
+1. [Kit3: Kit2 + Redux](#3-kit3-kit2--redux)
+1. [Kit4: Kit3 + react-router](#4-kit4-kit3--react-router)
+1. [Kit5: Kit4 + Mocha](#5-kit5-kit4--mocha)
+1. [Kit6: Kit5 + material-ui](#6-kit6-kit5--material-ui)
 
 
 # 1 Kit1: React+Babel+Webpack
@@ -357,7 +357,7 @@ Install Redux related packages,
 
 Let's write a simple component named `Counter`, which is almost the same with the official example, [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter).
 
-Copy four directories `actions`, `components`, `containers`, `reducers` from the official counter example to our `src` directory.
+Copy five directories `actions`, `components`, `containers`, `reducers` and `store` from the official counter example to our `src` directory.
 
 Rename `component/Counter.js` to `component/Counter.jsx`, `containers/App.js` to `containers/Counter.js`
 
@@ -386,16 +386,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/App.jsx'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import reducer from './reducers'
+import configureStore from './store/configureStore'
 require('file?name=[name].[ext]!./index.html')
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunk
-)(createStore)
-
-const store = createStoreWithMiddleware(reducer)
+const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,19 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import reducer from './reducers'
+import configureStore from './store/configureStore'
 import routes from './routes'
 import Router from 'react-router'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 require('file?name=[name].[ext]!./index.html')
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunk
-)(createStore)
-
-const store = createStoreWithMiddleware(reducer)
+const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>
