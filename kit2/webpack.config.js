@@ -5,17 +5,8 @@ var path = require('path');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
-  devServer: {
-    hot: true,
-    inline: true,
-    progress: true,
-    contentBase: './build',
-    port: 8080
-  },
   entry: [
     'babel-polyfill',
-    'webpack/hot/dev-server',
-    'webpack-dev-server/client?http://localhost:8080',
     path.resolve(__dirname, 'src/main.jsx')
   ],
   resolve: {

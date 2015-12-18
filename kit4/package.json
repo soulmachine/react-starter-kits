@@ -5,7 +5,7 @@
   "main": "src/main.jsx",
   "scripts": {
     "build": "webpack -d",
-    "start": "webpack-dev-server --inline --hot --devtool source-map --progress --colors --content-base build",
+    "start": "webpack-dev-server --devtool source-map --hot --inline --progress --colors --history-api-fallback --content-base build",
     "lint": "eslint 'src/**/*.@(js|jsx)'",
     "test": "echo \"Error: no test specified\" && exit 0",
     "validate": "npm ls"

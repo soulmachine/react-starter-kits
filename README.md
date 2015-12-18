@@ -221,22 +221,7 @@ The [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html)
 
 Add a subcommand `start` in `scripts` section of `package.json`:
 
-    "start": "webpack-dev-server --inline --devtool source-map --progress --colors --content-base build",
-
-Add a line to the `entry` section of `webpack.config.js`:
-
-    'webpack-dev-server/client?http://localhost:8080',
-
-And configure `webpack-dev-server` by adding a `devServer` field in `webpack.config.js`:
-
-```javascript
-devServer: {
-  inline: true,
-  progress: true,
-  contentBase: './build',
-  port: 8080
-},
-```
+    "start": "webpack-dev-server --devtool source-map --inline --progress --colors --content-base build",
 
 Now run `npm run start` and open <http://localhost:8080> in a browser.
 
@@ -256,16 +241,16 @@ plugins: [
 ]
 ```
 
-Now build the project again and run `npm run start` you'll find that the the browser opens <http://localhost:8080> automatically.
+Now run `npm run start` you'll find that it will launch a browser to open <http://localhost:8080> automatically.
 
-    rm -rf build
     npm run start
+
 
 ## 2.3 Hot Module Replacement
 
 [Hot Module Replacement](https://github.com/webpack/docs/wiki/hot-module-replacement-with-webpack) (HMR) exchanges, adds, or removes modules while an application is running **without a page reload**.
 
-You have [two ways](http://webpack.github.io/docs/webpack-dev-server.html#hot-module-replacement) to enable Hot Module Replacement with the webpack-dev-server.
+There are [two ways](http://webpack.github.io/docs/webpack-dev-server.html#hot-module-replacement) to enable Hot Module Replacement with the webpack-dev-server.
 
 1. Specify `--hot` and `--inline` in the command line
 
@@ -273,9 +258,13 @@ You have [two ways](http://webpack.github.io/docs/webpack-dev-server.html#hot-mo
 
 2. Modify` webpack.config.js`.
 
-    + Add `inline: true` and `hot: true` to the `devServer` field
     + add `new webpack.HotModuleReplacementPlugin()` to the `plugins` field
     + add `webpack/hot/dev-server` and `webpack-dev-server/client?http://localhost:8080` to the `entry` field
+
+The first way is much simpler. Just add a flag `--hot` to the subcommand `start`:
+
+    "start": "webpack-dev-server --devtool source-map --hot --inline --progress --colors --content-base build",
+
 
 ## 2.4 ESLint and Airbnb's ESLint config
 
@@ -549,7 +538,7 @@ To keep our web app simple, we'll use the second way:
 + In development phase, make `webpack-dev-server` always return `index.html`
 + In deploy phase, make our HTTP server such as Nignx always return `index.html`
 
-Add a line `historyApiFallback: true,` to the `devServer` field of `webpack.config.js`, then run `npm start` again and refresh at <http://localhost:8080/counter> or enter it directly in browser address bar, you'll see everything works!
+Add a flag `--history-api-fallback` to the subcommand `start` in `package.json`, then run `npm start` again and refresh at <http://localhost:8080/counter> or enter it directly in browser address bar, you'll see everything works!
 
 
 # 5 Kit5: Kit4 + Mocha
@@ -851,6 +840,10 @@ export default (props) =>
 var path = require('path');
 
 module.exports = {
+  entry: [
+    'babel-polyfill',
+    path.resolve(__dirname, 'src/main.jsx')
+  ],
   resolve: {
     //When requiring, you don't need to add these extensions
     extensions: ["", ".js", ".jsx"]
@@ -888,14 +881,9 @@ module.exports = {
 'use strict';
 
 var webpack = require('webpack');
-var path = require('path');
 var baseConfig = require('./webpack.config.base');
 
 var config = Object.create(baseConfig);
-config.entry = [
-  'babel-polyfill',
-  path.resolve(__dirname, 'src/main.jsx')
-];
 config.plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.optimize.DedupePlugin(),
@@ -919,25 +907,10 @@ module.exports = config;
 'use strict';
 
 var webpack = require('webpack');
-var path = require('path');
 var baseConfig = require('./webpack.config.base');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 var config = Object.create(baseConfig);
-config.devServer = {
-  historyApiFallback: true,
-  hot: true,
-  inline: true,
-  progress: true,
-  contentBase: './build',
-  port: 8080
-};
-config.entry = [
-  'babel-polyfill',
-  'webpack/hot/dev-server',
-  'webpack-dev-server/client?http://localhost:8080',
-  path.resolve(__dirname, 'src/main.jsx')
-];
 config.plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
@@ -956,9 +929,10 @@ Add a new build command to `scripts` field of `package.json`:
 
     "build:production": "webpack -p --config webpack.config.production.js",
 
-And modify the `build` subcommand a little bit:
+We also need to specify the configuration file for the `build` and `start` subcommands:
 
     "build": "webpack -d --config webpack.config.development.js",
+    "start": "webpack-dev-server --devtool source-map --hot --inline --progress --colors --history-api-fallback --config webpack.config.development.js --content-base build",
 
 
 ### 7.5.5 Run and Verify

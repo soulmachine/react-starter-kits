@@ -1,14 +1,9 @@
 'use strict';
 
 var webpack = require('webpack');
-var path = require('path');
 var baseConfig = require('./webpack.config.base');
 
 var config = Object.create(baseConfig);
-config.entry = [
-  'babel-polyfill',
-  path.resolve(__dirname, 'src/main.jsx')
-];
 config.plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.optimize.DedupePlugin(),
