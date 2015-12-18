@@ -22,7 +22,7 @@
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "babel-runtime": "^6.3.13",
-    "history": "^1.13.1",
+    "history": "1.13.x",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.1",
