@@ -183,7 +183,7 @@ See the code in `kit1/src` directory.
 
 Add a subcommand `build` to the `scripts` section of `package.json`,
 
-    "build": "webpack",
+    "build": "webpack -d",
 
 Compile the whole project,
 
@@ -220,7 +220,7 @@ The [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html)
 
 Add a subcommand `start` in `scripts` section of `package.json`:
 
-    "start": "webpack-dev-server --inline --devtool eval --progress --colors --content-base build",
+    "start": "webpack-dev-server --inline --devtool source-map --progress --colors --content-base build",
 
 Add a line to the `entry` section of `webpack.config.js`:
 

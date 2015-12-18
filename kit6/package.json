@@ -4,8 +4,8 @@
   "description": "A React starter kit",
   "main": "src/main.jsx",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --inline --hot --devtool eval --progress --colors --content-base build",
+    "build": "webpack -d",
+    "start": "webpack-dev-server --inline --hot --devtool source-map --progress --colors --content-base build",
     "lint": "eslint 'src/**/*.@(js|jsx)'",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
     "validate": "npm ls"
