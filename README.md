@@ -10,6 +10,7 @@ Table of Contents
 1. [Kit4: Kit3 + react-router](#4-kit4-kit3--react-router)
 1. [Kit5: Kit4 + Mocha](#5-kit5-kit4--mocha)
 1. [Kit6: Kit5 + material-ui](#6-kit6-kit5--material-ui)
+1. [Kit7: Kit6 + redux-devtools](#7-kit7-kit6--redux-devtools)
 
 
 # 1 Kit1: React+Babel+Webpack
@@ -662,5 +663,314 @@ injectTapEventPlugin()
 ```
 
 Now run `npm start` and you'll see the new button in browser.
+
+
+# 7 Kit7: Kit6 + redux-devtools
+
+## 7.1 Installation
+
+    npm install --save-dev redux-devtools redux-devtools-log-monitor redux-devtools-dock-monitor
+    
+## 7.2 Create a `DevTools` Component
+
+`src/containers/DevTools.jsx`:
+
+```javascript
+import React from 'react'
+
+// Exported from redux-devtools
+import { createDevTools } from 'redux-devtools'
+
+// Monitors are separate packages, and you can make a custom one
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
+
+// createDevTools takes a monitor and produces a DevTools component
+const DevTools = createDevTools(
+  // Monitors are individually adjustable with props.
+  // Consult their repositories to learn about those props.
+  // Here, we put LogMonitor inside a DockMonitor.
+  <DockMonitor toggleVisibilityKey="ctrl-h"
+    changePositionKey="ctrl-q"
+  >
+    <LogMonitor theme="tomorrow" />
+  </DockMonitor>
+)
+
+export default DevTools
+```
+
+## 7.3 Use `DevTools.instrument()` Store Enhancer
+
+In `src/store/configureStore.js` replace the function `createStoreWithMiddleware` with the new function `finalCreateStore()`:
+
+```javascript
+import { createStore, applyMiddleware, compose } from 'redux'
+import DevTools from '../containers/DevTools'
+
+const finalCreateStore = compose(
+  // Middleware you want to use in development:
+  applyMiddleware(thunk),
+  // Required! Enable Redux DevTools with the monitors you chose
+  DevTools.instrument()
+)(createStore)
+```
+
+## 7.4 Render `<DevTools>` in Your App
+
+Add `DevTools` to `src/components/App.jsx`:
+
+```jsx
+import React from 'react'
+import Header from './Header'
+import DevTools from '../containers/DevTools'
+
+export default (props) =>
+  <div>
+    <Header/>
+    {props.children}
+    <DevTools/>
+  </div>
+```
+
+Run `npm start` and you'll see a `DevTools` panel on the right side. Try to click the `+` button and you'll see that `DevTools` is tracking the changes of state.
+
+
+## 7.5 Exclude DevTools from Production Builds
+
+
+### 7.5.1 Split `store/configureStore.js` to three files
+
+`store/configureStore.js`:
+
+```javascript
+// Use ProvidePlugin (Webpack) or loose-envify (Browserify)
+// together with Uglify to strip the dev branch in prod build.
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./configureStore.production')
+} else {
+  module.exports = require('./configureStore.development')
+}
+```
+
+`store/configureStore.production.js`:
+
+```javascript
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import rootReducer from '../reducers'
+
+const finalCreateStore = applyMiddleware(
+  thunk
+)(createStore)
+
+export default function configureStore(initialState) {
+  return finalCreateStore(rootReducer, initialState)
+}
+```
+
+`store/configureStore.development.js`:
+
+```javascript
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+import rootReducer from '../reducers'
+import DevTools from '../containers/DevTools'
+
+const finalCreateStore = compose(
+  // Middleware you want to use in development:
+  applyMiddleware(thunk),
+  // Required! Enable Redux DevTools with the monitors you chose
+  DevTools.instrument()
+)(createStore)
+
+export default function configureStore(initialState) {
+  const store = finalCreateStore(rootReducer, initialState)
+
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('../reducers', () => {
+      const nextReducer = require('../reducers')
+      store.replaceReducer(nextReducer)
+    })
+  }
+
+  return store
+}
+```
+
+
+### 7.5.2 Split `components/App.jsx` to three files
+
+`components/App.jsx`:
+
+```jsx
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./App.production')
+} else {
+  module.exports = require('./App.development')
+}
+```
+
+`components/App.production.jsx`:
+
+```jsx
+import React from 'react'
+import Header from './Header'
+
+export default (props) =>
+  <div>
+    <Header/>
+    {props.children}
+  </div>
+```
+
+`components/App.development.jsx`:
+
+```jsx
+import React from 'react'
+import Header from './Header'
+import DevTools from '../containers/DevTools'
+
+export default (props) =>
+  <div>
+    <Header/>
+    {props.children}
+    <DevTools/>
+  </div>
+```
+
+
+### 7.5.3 Split `webpack.config.js` to three files
+
+`webpack.config.base.js`:
+
+```javascript
+'use strict';
+
+var path = require('path');
+
+module.exports = {
+  resolve: {
+    //When requiring, you don't need to add these extensions
+    extensions: ["", ".js", ".jsx"]
+  },
+  output: {
+    path: __dirname + '/build',
+    publicPath: '/',
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.css$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: 'style-loader!css-loader?modules'
+      },
+      {
+        test: /\.jsx?$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+        loader: 'babel'
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=8192'
+      }
+    ]
+  }
+};
+```
+
+`webpack.config.production.js`:
+
+```javascript
+'use strict';
+
+var webpack = require('webpack');
+var path = require('path');
+var baseConfig = require('./webpack.config.base');
+
+var config = Object.create(baseConfig);
+config.entry = [
+  'babel-polyfill',
+  path.resolve(__dirname, 'src/main.jsx')
+];
+config.plugins = [
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.optimize.DedupePlugin(),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }),
+  new webpack.optimize.UglifyJsPlugin({
+    compressor: {
+      screw_ie8: true,
+      warnings: false
+    }
+  })
+];
+
+module.exports = config;
+```
+
+`webpack.config.development.js`:
+
+```javascript
+'use strict';
+
+var webpack = require('webpack');
+var path = require('path');
+var baseConfig = require('./webpack.config.base');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+
+var config = Object.create(baseConfig);
+config.devServer = {
+  historyApiFallback: true,
+  hot: true,
+  inline: true,
+  progress: true,
+  contentBase: './build',
+  port: 8080
+};
+config.entry = [
+  'babel-polyfill',
+  'webpack/hot/dev-server',
+  'webpack-dev-server/client?http://localhost:8080',
+  path.resolve(__dirname, 'src/main.jsx')
+];
+config.plugins = [
+  new webpack.HotModuleReplacementPlugin(),
+  new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('development')
+  })
+];
+
+module.exports = config;
+```
+
+
+### 7.5.4 Add a new build command to `package.json`
+
+Add a new build command to `scripts` field of `package.json`:
+
+    "build:production": "webpack -p --config webpack.config.production.js",
+
+And modify the `build` subcommand a little bit:
+
+    "build": "webpack -d --config webpack.config.development.js",
+
+
+### 7.5.5 Run and Verify
+
+    npm run build:production
+    cd build
+    # check the size of bundle.js
+    ls -lh
+    python -m SimpleHTTPServer 8080
+
+Open <http://localhost:8080/> in a browser you'll see that the DevTools panel is gone.
+
+Besides, the size of `bundle.js` becomes much smaller now.
 
 
