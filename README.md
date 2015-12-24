@@ -420,14 +420,7 @@ We want the `Hello World` text to be displayed at the home URL '/' and the count
 
 Install react-router,
 
-    npm install --save history@1.13.1 react-router@latest
-
-Do use `history@1.13.1`, see official docs [Release v1.0.2](https://github.com/rackt/react-router/releases/tag/v1.0.2):
-
-Due to this issue, [react-router wants history@1.13.x](https://github.com/rackt/react-router/issues/2682), we need to edit `package.json` manually and change `"history": "^1.13.1"` to `"history": "1.13.x"`.
-
-> Please ensure your project is running history v1.13.1 to avoid any deprecation warnings or unmet peerDependencies errors.
-
+    npm install --save history react-router
 
 Creat a `Header` component, which is a stateless component:
 
