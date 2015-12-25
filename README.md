@@ -349,7 +349,7 @@ Let's write a simple component named `Counter`, which is almost the same with th
 
 Copy five directories `actions`, `components`, `containers`, `reducers` and `store` from the official counter example to our `src` directory.
 
-Rename `component/Counter.js` to `component/Counter.jsx`, `containers/App.js` to `containers/Counter.js`
+Rename `component/Counter.js` to `component/Counter.jsx`, `containers/Counter.js` to `containers/Counter.js`
 
 In `containers/Counter.js` change the line `import Counter from '../components/Counter'` to `import Counter from '../components/Counter.jsx'`.
 
@@ -463,12 +463,14 @@ export default () =>
 
 Rename the file `App.css` to `HelloWorld.css`.
 
+Move `components/App.jsx` to `containers/App.jsx` and modify import paths in `routes.jsx` and `App.jsx`.
+
 Create a new file `src/routes.jsx`:
 
 ```javascript
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import App from './components/App.jsx'
+import App from './containers/App.jsx'
 import HelloWorld from './components/HelloWorld.jsx'
 import Counter from './containers/Counter'
 
@@ -700,7 +702,7 @@ const finalCreateStore = compose(
 
 ## 7.4 Render `<DevTools>` in Your App
 
-Add `DevTools` to `src/components/App.jsx`:
+Add `DevTools` to `src/containers/App.jsx`:
 
 ```jsx
 import React from 'react'
@@ -782,45 +784,27 @@ export default function configureStore(initialState) {
 ```
 
 
-### 7.5.2 Split `components/App.jsx` to three files
+### 7.5.2 Create a `DevTools` only visible in development mode
 
-`components/App.jsx`:
+`containers/DevTools.js`:
 
 ```jsx
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./App.production')
+  module.exports = require('./DevTools.production')
 } else {
-  module.exports = require('./App.development')
+  module.exports = require('./DevTools.development')
 }
 ```
 
-`components/App.production.jsx`:
+`containers/DevTools.production.jsx`:
 
 ```jsx
 import React from 'react'
-import Header from './Header'
 
-export default (props) =>
-  <div>
-    <Header/>
-    {props.children}
-  </div>
+export default () => <div></div>
 ```
 
-`components/App.development.jsx`:
-
-```jsx
-import React from 'react'
-import Header from './Header'
-import DevTools from '../containers/DevTools'
-
-export default (props) =>
-  <div>
-    <Header/>
-    {props.children}
-    <DevTools/>
-  </div>
-```
+Rename `containers/DevTools.jsx` to `containers/DevTools.development.jsx`:
 
 
 ### 7.5.3 Split `webpack.config.js` to three files
