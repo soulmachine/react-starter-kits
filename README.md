@@ -305,7 +305,7 @@ Add `.eslintignore`:
     **/*.css
     **/*.html
 
-Add a subcommand `lint` to the `scripts` field of `webpack.config.js`:
+Add a subcommand `lint` to the `scripts` field of `package.json`:
 
     "lint": "eslint 'src/**/*.@(js|jsx)'",
 
