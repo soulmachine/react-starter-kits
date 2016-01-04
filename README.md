@@ -397,7 +397,7 @@ Compile and run:
 
 It will open in a browser automatically.
 
-At last, I need to point out the **Project Layout** specifically. In a `React + Redux` project, the state is in Redux single store, so there is no need for components to have their own state, which means **all components are stateless**. The `src/containers` is for stateless components which are not aware of Redux, and the `src/containers` is for [smart components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.9esqxa1km) which are responsible to pass down state to dumb components as props.
+At last, I need to point out the **Project Layout** specifically. In a `React + Redux` project, the state is in Redux single store, so there is no need for components to have their own state, which means **all components are stateless**. The `src/components` is for stateless components which are not aware of Redux, and the `src/containers` is for [smart components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.9esqxa1km) which are responsible to pass down state to dumb components as props.
 
 References:
 
