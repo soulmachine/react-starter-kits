@@ -270,7 +270,7 @@ The first way is much simpler. Just add a flag `--hot` to the subcommand `start`
 
 Install:
 
-    npm install --save-dev eslint babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y
+    npm install --save-dev eslint eslint-config-airbnb eslint-plugin-react eslint-plugin-import eslint-plugin-jsx-a11y
 
 Add `.eslintrc`:
 
