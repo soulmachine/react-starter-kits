@@ -25,7 +25,7 @@ First, make an empty project by running `npm init`, and enter the following info
     description: A React starter kit
     entry point: (index.js) src/main.jsx
     test command: 
-    git repository: 
+    git repository: git@github.com:soulmachine/react-starter-kits.git
     keywords: es6,react,babel6,webpack,boilerplate
     author: soulmachine
     license: (ISC) MIT
