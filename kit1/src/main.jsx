@@ -4,6 +4,6 @@ import App from './components/App'
 require('file?name=[name].[ext]!./index.html')
 
 ReactDOM.render(
-  <App/>,
+  <App />,
   document.getElementById('app')
 )

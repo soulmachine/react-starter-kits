@@ -215,7 +215,7 @@ We're going to use more features of webpack, to make the development workflow mo
 
 ## 2.1 webpack-dev-server
 
-The [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) is a little node.js Express server serve static files. 
+The [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) is actually a node.js Express server that serves static files. 
 
     npm install --save-dev webpack-dev-server
 
@@ -270,7 +270,7 @@ The first way is much simpler. Just add a flag `--hot` to the subcommand `start`
 
 Install:
 
-    npm install --save-dev eslint babel-eslint eslint-config-airbnb eslint-plugin-react
+    npm install --save-dev eslint babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y
 
 Add `.eslintrc`:
 
