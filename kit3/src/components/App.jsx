@@ -2,17 +2,9 @@ import React from 'react'
 import Counter from '../containers/Counter'
 require('./App.css')
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+export default () =>
+  <div>
+    <h1>Hello World</h1>
+    <Counter />
+  </div>
 
-  render() {
-    return (
-      <div>
-        <h1>Hello World</h1>
-        <Counter />
-      </div>
-    )
-  }
-}
