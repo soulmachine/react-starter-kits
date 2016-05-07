@@ -436,13 +436,13 @@ export default () =>
   </div>
 ```
 
-Split `components/App.jsx` to two files, `App.jsx` and `HelloWorld.jsx`.
+Split `components/App.jsx` to two files, `containers/App.jsx` and `components/HelloWorld.jsx`.
 
-`App.jsx`:
+`containers/App.jsx`:
 
 ```javascript
 import React from 'react'
-import Header from './Header.jsx'
+import Header from '../components/Header.jsx'
 
 export default (props) =>
   <div>
@@ -451,7 +451,7 @@ export default (props) =>
   </div>
 ```
 
-`HelloWorld.jsx`:
+`components/HelloWorld.jsx`:
 
 ```javascript
 import React from 'react'
@@ -462,8 +462,6 @@ export default () =>
 ```
 
 Rename the file `App.css` to `HelloWorld.css`.
-
-Move `components/App.jsx` to `containers/App.jsx` and modify import paths in `routes.jsx` and `App.jsx`.
 
 Create a new file `src/routes.jsx`:
 
@@ -483,15 +481,15 @@ const routes =
 export default routes
 ```
 
-Make `Router` as the root component in `main.jsx`:
+Make `Router` as the root component in `main.jsx` and delete `import App`:
 
 ```javascript
 import routes from './routes.jsx'
-import Router from 'react-router'
+import { Router, hashHistory } from 'react-router'
 //...
 ReactDOM.render(
   <Provider store={store}>
-    <Router>{routes}</Router>
+    <Router history={hashHistory}>{routes}</Router>
   </Provider>,
   document.getElementById('app')
 )
@@ -506,17 +504,17 @@ Everything works!
 
 ## 4.2 Remove `#` in URLs
 
-You'll see a `#` in all URLs, this is because react-router uses `createHashHistory` by default.
+You'll see a `#` in all URLs, this is because react-router uses `hashHistory` by default.
 
-Normally we want URLs <http://www.example.com/about> instead of <http://www.example.com/#/about>, how to achive this? Use `createBrowserHistory`.
+Normally we want URLs <http://www.example.com/about> instead of <http://www.example.com/#/about>, how to achive this? Use `browserHistory`.
 
 Modify `main.jsx` a little bit:
 
 ```javascript
-import createBrowserHistory from 'history/lib/createBrowserHistory'
+import { Router, browserHistory } from 'react-router'
 //...
 
-<Router history={createBrowserHistory()}>{routes}</Router>
+<Router history={browserHistory()}>{routes}</Router>
 ```
 
 Run `npm start` and take a look in browser. Looks Good!

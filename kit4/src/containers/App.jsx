@@ -3,6 +3,6 @@ import Header from '../components/Header'
 
 export default (props) =>
   <div>
-    <Header/>
+    <Header />
     {props.children}
   </div>
