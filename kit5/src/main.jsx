@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import routes from './routes'
-import Router from 'react-router'
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-require('file?name=[name].[ext]!./index.html')
+import { Router, browserHistory } from 'react-router'
+require('file?name=[name].[ext]!./index.html') // eslint-disable-line
 
 const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={createBrowserHistory()}>{routes}</Router>
+    <Router history={browserHistory}>{routes}</Router>
   </Provider>,
   document.getElementById('app')
 )
