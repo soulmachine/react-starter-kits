@@ -1,19 +1,20 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import reducer from '../reducers'
-const nextReducer = require('../reducers')
+import rootReducer from '../reducers'
 
-const createStoreWithMiddleware = applyMiddleware(
+const enhancer = applyMiddleware(
   thunk
-)(createStore)
+)
 
 export default function configureStore(initialState) {
-  const store = createStoreWithMiddleware(reducer, initialState)
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  const store = createStore(rootReducer, initialState, enhancer)
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      store.replaceReducer(nextReducer)
+      store.replaceReducer(require('../reducers').default) // eslint-disable-line
     })
   }
 

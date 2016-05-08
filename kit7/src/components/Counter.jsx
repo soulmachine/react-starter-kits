@@ -5,7 +5,7 @@ const Counter = ({ increment, incrementIfOdd, incrementAsync, decrement, counter
   <div>
     Clicked: {counter} times
     {' '}
-    <RaisedButton label="+" secondary={true} onTouchTap={increment}/>
+    <RaisedButton label="+" secondary onTouchTap={increment} />
     {' '}
     <button onClick={decrement}>-</button>
     {' '}

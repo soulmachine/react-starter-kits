@@ -206,7 +206,7 @@ Install the loader `file-loader`,
     
 In `main.jsx` file add a require to `index.html` via `file-loader`,
 
-    require('file?name=[name].[ext]!./index.html');
+    require('file?name=[name].[ext]!./index.html')
 
 
 # 2 Kit2: Kit1 + webpack-dev-server + ESLint
@@ -349,7 +349,7 @@ Let's write a simple component named `Counter`, which is almost the same with th
 
 Copy five directories `actions`, `components`, `containers`, `reducers` and `store` from the official counter example to our `src` directory.
 
-Rename `component/Counter.js` to `component/Counter.jsx`, `containers/Counter.js` to `containers/Counter.js`
+Rename `component/Counter.js` to `component/Counter.jsx`.
 
 In `containers/Counter.js` change the line `import Counter from '../components/Counter'` to `import Counter from '../components/Counter.jsx'`.
 
@@ -634,19 +634,19 @@ Change the `<p>` to `<div>` or there will be warnings in console.
 Add the following lines to `src/main.jsx`:
 
 ```javascript
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+injectTapEventPlugin()
 ```
 
 Modify the `src/containers/App.jsx` to the following:
 
 ```jsx
 import React from 'react'
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Header from '../components/Header'
 
 export default (props) => (
@@ -688,10 +688,12 @@ const DevTools = createDevTools(
   // Consult their repositories to learn about those props.
   // Here, we put LogMonitor inside a DockMonitor.
   // Note: DockMonitor is visible by default.
-  <DockMonitor toggleVisibilityKey='ctrl-h'
-               changePositionKey='ctrl-q'
-               defaultIsVisible={true}>
-    <LogMonitor theme='tomorrow' />
+  <DockMonitor
+    toggleVisibilityKey="ctrl-h"
+    changePositionKey="ctrl-q"
+    defaultIsVisible
+  >
+    <LogMonitor theme="tomorrow" />
   </DockMonitor>
 )
 
