@@ -624,24 +624,39 @@ Let's replace the `+` button in the `Counter` component to [RaisedButton](http:/
 In ``src/components/Counter.jsx` import the `RaisedButton` and replace the `+` button with it:
 
 ```jsx
-const RaisedButton = require('material-ui/lib/raised-button')
+import RaisedButton from 'material-ui/RaisedButton'
 //...
 <RaisedButton label="+" secondary={true} onTouchTap={increment}/>
 ```
-
-For now we can't use ES6 `import` to import material-ui components, see this PR [[ES6] Use import over require by oliviertassinari · Pull Request #2333](https://github.com/callemall/material-ui/pull/2333). 
 
 Change the `<p>` to `<div>` or there will be warnings in console.
 
 Add the following lines to `src/main.jsx`:
 
 ```javascript
-const injectTapEventPlugin = require('react-tap-event-plugin')
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 // Needed for onTouchTap
-// Can go away when react 1.0 release
-// Check this repo:
-// https://github.com/zilverline/react-tap-event-plugin
-injectTapEventPlugin()
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
+```
+
+Modify the `src/containers/App.jsx` to the following:
+
+```jsx
+import React from 'react'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Header from '../components/Header'
+
+export default (props) => (
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <div>
+      <Header />
+      {props.children}
+    </div>
+  </MuiThemeProvider>
+)
 ```
 
 Now run `npm start` and you'll see the new button in browser.
