@@ -3,22 +3,23 @@ import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
-const finalCreateStore = compose(
+const enhancer = compose(
   // Middleware you want to use in development:
   applyMiddleware(thunk),
   // Required! Enable Redux DevTools with the monitors you chose
   DevTools.instrument()
-)(createStore)
+)
 
 export default function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState)
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  const store = createStore(rootReducer, initialState, enhancer)
 
+  // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
   if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers')
-      store.replaceReducer(nextReducer)
-    })
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(require('../reducers').default) // eslint-disable-line
+    )
   }
 
   return store

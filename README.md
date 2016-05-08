@@ -446,7 +446,7 @@ import Header from '../components/Header.jsx'
 
 export default (props) =>
   <div>
-    <Header/>
+    <Header />
     {props.children}
   </div>
 ```
@@ -672,7 +672,7 @@ Now run `npm start` and you'll see the new button in browser.
 
 `src/containers/DevTools.jsx`:
 
-```javascript
+```jsx
 import React from 'react'
 
 // Exported from redux-devtools
@@ -687,10 +687,11 @@ const DevTools = createDevTools(
   // Monitors are individually adjustable with props.
   // Consult their repositories to learn about those props.
   // Here, we put LogMonitor inside a DockMonitor.
-  <DockMonitor toggleVisibilityKey="ctrl-h"
-    changePositionKey="ctrl-q"
-  >
-    <LogMonitor theme="tomorrow" />
+  // Note: DockMonitor is visible by default.
+  <DockMonitor toggleVisibilityKey='ctrl-h'
+               changePositionKey='ctrl-q'
+               defaultIsVisible={true}>
+    <LogMonitor theme='tomorrow' />
   </DockMonitor>
 )
 
@@ -699,18 +700,35 @@ export default DevTools
 
 ## 7.3 Use `DevTools.instrument()` Store Enhancer
 
-In `src/store/configureStore.js` replace the function `createStoreWithMiddleware` with the new function `finalCreateStore()`:
+Modify the file `src/store/configureStore.js`:
 
 ```javascript
 import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
-const finalCreateStore = compose(
+const enhancer = compose(
   // Middleware you want to use in development:
   applyMiddleware(thunk),
   // Required! Enable Redux DevTools with the monitors you chose
   DevTools.instrument()
-)(createStore)
+)
+
+export default function configureStore(initialState) {
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  const store = createStore(rootReducer, initialState, enhancer)
+
+  // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
+  if (module.hot) {
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(require('../reducers').default) // eslint-disable-line
+    )
+  }
+
+  return store
+}
 ```
 
 ## 7.4 Render `<DevTools>` in Your App
@@ -724,9 +742,9 @@ import DevTools from '../containers/DevTools'
 
 export default (props) =>
   <div>
-    <Header/>
+    <Header />
     {props.children}
-    <DevTools/>
+    <DevTools />
   </div>
 ```
 
@@ -757,12 +775,14 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 
-const finalCreateStore = applyMiddleware(
+const enhancer = applyMiddleware(
   thunk
-)(createStore)
+)
 
 export default function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState)
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  return createStore(rootReducer, initialState, enhancer)
 }
 ```
 
@@ -774,22 +794,23 @@ import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
-const finalCreateStore = compose(
+const enhancer = compose(
   // Middleware you want to use in development:
   applyMiddleware(thunk),
   // Required! Enable Redux DevTools with the monitors you chose
   DevTools.instrument()
-)(createStore)
+)
 
 export default function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState)
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  const store = createStore(rootReducer, initialState, enhancer)
 
+  // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
   if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers')
-      store.replaceReducer(nextReducer)
-    })
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(require('../reducers').default) // eslint-disable-line
+    )
   }
 
   return store
@@ -936,5 +957,3 @@ We also need to specify the configuration file for the `build` and `start` subco
 Open <http://localhost:8080/> in a browser you'll see that the DevTools panel is gone.
 
 Besides, the size of `bundle.js` becomes much smaller now.
-
-

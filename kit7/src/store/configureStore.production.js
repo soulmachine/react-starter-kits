@@ -2,10 +2,12 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 
-const finalCreateStore = applyMiddleware(
+const enhancer = applyMiddleware(
   thunk
-)(createStore)
+)
 
 export default function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState)
+  // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
+  // See https://github.com/rackt/redux/releases/tag/v3.1.0
+  return createStore(rootReducer, initialState, enhancer)
 }
