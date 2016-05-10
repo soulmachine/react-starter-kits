@@ -5,6 +5,7 @@ import configureStore from './store/configureStore'
 import routes from './routes'
 import { Router, browserHistory } from 'react-router'
 require('file?name=[name].[ext]!./index.html') // eslint-disable-line
+require('file?name=[name].[ext]!./main.css') // eslint-disable-line
 
 const store = configureStore()
 

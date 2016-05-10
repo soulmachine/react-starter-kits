@@ -206,7 +206,11 @@ Install the loader `file-loader`,
     
 In `main.jsx` file add a require to `index.html` via `file-loader`,
 
-    require('file?name=[name].[ext]!./index.html')
+    require('file?name=[name].[ext]!./index.html') // eslint-disable-line
+
+We also need to copy `main.css` to `build/`,
+
+    require('file?name=[name].[ext]!./main.css') // eslint-disable-line
 
 
 # 2 Kit2: Kit1 + webpack-dev-server + ESLint
