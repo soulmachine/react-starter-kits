@@ -5,7 +5,7 @@ All starter kits in this tutorial use ES6 by default.
 Table of Contents
 -----------------
 1. [Step1: React+Babel+Webpack](#1-step1-create-react-app)
-1. [Step2: Step1 + MobX](#2-step2-mobx)
+1. [Step2: Step1 + MobX](#2-step2-step1--mobx)
 
 
 # 1 Step1: create-react-app
