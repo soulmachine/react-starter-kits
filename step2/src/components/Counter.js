@@ -1,23 +1,25 @@
-import React, { Component, PropTypes } from 'react';
-import { observer } from 'mobx-react';
+import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 
-@observer class Counter extends Component {
+@inject('counterStore')
+@observer
+export default class Counter extends Component {
   handleInc = () => {
-    this.props.store.increment();
+    this.props.counterStore.increment();
   };
 
   handleDec = () => {
-    this.props.store.decrement(); 
+    this.props.counterStore.decrement(); 
   };
 
   handleIncAsync = () => {
-    this.props.store.incrementAsync();
+    this.props.counterStore.incrementAsync();
   };
 
   render() {
     return (
       <div>
-        Counter: {this.props.store.count} {'  '}
+        Counter: {this.props.counterStore.count} {'  '}
         <button onClick={this.handleInc}> + </button>
         <button onClick={this.handleDec}> - </button>
         <button onClick={this.handleIncAsync}> Increment async </button>
@@ -26,4 +28,7 @@ import { observer } from 'mobx-react';
   }
 }
 
-export default Counter;
+Counter.propTypes = {
+  counterStore: React.PropTypes.object,
+}
+

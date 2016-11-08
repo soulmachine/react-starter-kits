@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import Counter from './components/Counter';
-import CounterStore from './stores/CounterStore';
+import {Provider} from 'mobx-react';
 
 //styles
 import './App.less';
 import styles from './Modules.css';
 
+import {counterStore} from './stores/CounterStore';
+
+const stores = {
+  counterStore,
+}
+
+
 class App extends Component {
   render() {
-    const counterStore = new CounterStore();
     return (
-      <Counter store={ counterStore } />
+      <Provider {...stores}>
+        <Counter />
+      </Provider>
     )
   }
 }

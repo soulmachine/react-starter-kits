@@ -19,3 +19,6 @@ export default class CounterStore {
     }, 1000);
   }
 }
+
+export const counterStore = new CounterStore();
+
