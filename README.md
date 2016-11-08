@@ -123,6 +123,7 @@ export default class CounterStore {
   }
 }
 
+// singleton
 export const counterStore = new CounterStore();
 ```
 
