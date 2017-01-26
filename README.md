@@ -349,7 +349,7 @@ Install Redux related packages,
 
     npm install --save redux react-redux redux-thunk
 
-Let's write a simple component named `Counter`, which is almost the same with the official example, [redux/examples/counter/](https://github.com/rackt/redux/tree/master/examples/counter).
+Let's write a simple component named `Counter`, which is almost the same with the official example, [redux/examples/counter/](https://github.com/reactjs/redux/tree/master/examples/counter).
 
 Copy five directories `actions`, `components`, `containers`, `reducers` and `store` from the official counter example to our `src` directory.
 
