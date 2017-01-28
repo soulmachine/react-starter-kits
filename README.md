@@ -25,3 +25,11 @@ Create an empty project via [create-react-app](https://github.com/facebookincuba
 * [ESLint](http://eslint.org/)
 * [Jest](http://facebook.github.io/jest)
 * and others.
+
+## `npm test`
+
+Runs the test watcher in an interactive mode.
+
+## `npm run build`
+
+Builds the app for production to the `build` folder.
