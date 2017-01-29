@@ -36,7 +36,7 @@ Runs the test watcher in an interactive mode.
 Builds the app for production to the `build` folder.
 
 
-## 2 Step2: Step1 + Redux
+# 2 Step2: Step1 + Redux
 
 Install Redux related packages,
 
