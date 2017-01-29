@@ -5,7 +5,7 @@ All starter kits in this tutorial use ES6 by default.
 Table of Contents
 -----------------
 1. [Step1: create-react-app](#1-step1-create-react-app)
-1. [Step2: Step1 + Redux](#2-step2-step1-redux)
+1. [Step2: Step1 + Redux](#2-step2-step1--redux)
 
 
 # 1 Step1: create-react-app
